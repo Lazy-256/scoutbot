@@ -4,17 +4,15 @@ import logging
 
 
 class ToScrapeSpiderXPath(scrapy.Spider):
-    configure_logging(install_root_handler=False)
-    logging.basicConfig(
-        filename='log.txt',
-        format='%(levelname)s: %(message)s',
-        level=logging.INFO
-    )
-
     name = 'toscrape-xpath'
     start_urls = [
         'https://www.autoscout24.ru/lst/suzuki/swift?sort=age&desc=1&doorfrom=2&doorto=3&ustate=N%2CU&size=20&page=1&cy=NL&priceto=100000&pricefrom=2000&version0=sport&atype=C&',
     ]
+
+    def __init__(self, *args, **kwargs):
+        logger = logging.getLogger('scrapy.spidermiddlewares.httperror')
+        logger.setLevel(logging.WARNING)
+        super().__init__(*args, **kwargs)
 
     def parse(self, response):
         for car in response.xpath('//div[@class="cl-list-element cl-list-element-gap"]'):
