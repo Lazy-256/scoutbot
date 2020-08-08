@@ -9,7 +9,7 @@ class ToScrapeSpiderXPath(scrapy.Spider):
     ]
 
     def parse(self, response):
-        for quote in response.xpath('//div[@cl-list-elements"]'):
+        for quote in response.xpath('//div[@class="cl-list-elements"]'):
             yield {
                 'title': quote.xpath('./div[@class="cl-list-element cl-list-element-gap"]/div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary-headline"]/div[@class="cldt-summary-titles"]/a[]/div[@class="cldt-summary-title"]/div[@class="cldt-summary-makemodelversion sc-ellipsis"]/h2[@class="cldt-summary-makemodel sc-font-bold sc-ellipsis"]/text()').extract_first(),
                 #' ' + quote.xpath('./div[@class="cl-list-element cl-list-element-gap"]/div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary-headline"]/div[@class="cldt-summary-titles"]/a[]/div[@class="cldt-summary-title"]/div[@class="cldt-summary-makemodelversion sc-ellipsis"]/h2[@class="cldt-summary-version sc-ellipsis"]/text()').extract_first(),
