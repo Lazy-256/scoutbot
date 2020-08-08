@@ -34,6 +34,6 @@ class ToScrapeSpiderXPath(scrapy.Spider):
 
         next_page_url = response.xpath(
             '//li[@class="next-page"]/a/@href').extract_first()
-        logging.info(next_page_url)
+        logging.info(response.urljoin(next_page_url))
         if next_page_url is not None:
             yield scrapy.Request(response.urljoin(next_page_url))
