@@ -22,14 +22,14 @@ class ToScrapeSpiderXPath(scrapy.Spider):
                 'title':             ' '.join(filter(None, car.xpath('.//h2[contains(@class ,"sc-ellipsis")]/text()').extract())),
                 'url':               response.urljoin(car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary-headline"]/div[@class="cldt-summary-titles"]/a/@href').extract_first()),
                 # 'price':             car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-pricing"]//text()').extract(),
-                'price':             filter(lambda item: len(item.strip()) > 0, car.xpath('.//span[@data-item-name="price"]/text()').extract_first()),
+                'price':             car.xpath('.//span[@data-item-name="price"]/text()').extract_first().strip(),
                 'milage':            car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-vehicle-data"]/ul[1]/li[1]/text()').extract_first(),
                 'relize-date':       car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-vehicle-data"]/ul[1]/li[2]/text()').extract_first(),
                 'power':             car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-vehicle-data"]/ul[1]/li[3]/text()').extract_first(),
                 'data-place-holder':      car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-vehicle-data"]/ul[1]/li[@data-placeholder=""]/text()').extract_first(),
                 'transmission-type': car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-vehicle-data"]/ul[1]/li[@data-type="transmission-type"]/text()').extract_first(),
                 # 'seller':            car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-seller"]/div[@class="cldt-summary-seller-data"]/div[@class="cldt-summary-seller-company"]//div/text()').extract(),
-                'seller':            ' '.join(filter(lambda item: len(item.strip()) > 0, car.xpath('.//div[@class="cldf-summary-seller-company-first-line"]//text()').extract()))
+                'seller':            ' '.join(filter(lambda item: len(item) > 0, car.xpath('.//div[@class="cldf-summary-seller-company-first-line"]//text()').extract().strip()))
                 + ' '.join(filter(lambda item: len(item) > 0, car.xpath(
                     './/div[@class="cldf-summary-seller-contact-second-line"]//text()').extract())),
             }
