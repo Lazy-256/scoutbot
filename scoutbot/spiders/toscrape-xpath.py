@@ -29,10 +29,9 @@ class ToScrapeSpiderXPath(scrapy.Spider):
                 'data-place-holder':      car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-vehicle-data"]/ul[1]/li[@data-placeholder=""]/text()').extract_first(),
                 'transmission-type': car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-vehicle-data"]/ul[1]/li[@data-type="transmission-type"]/text()').extract_first(),
                 # 'seller':            car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-seller"]/div[@class="cldt-summary-seller-data"]/div[@class="cldt-summary-seller-company"]//div/text()').extract(),
-                # lambda item: len(item) > 0
-                'seller':            ' '.join(filter(None, car.xpath('.//div[@class="cldf-summary-seller-company-first-line"]//text()').extract_first())).strip('\n').split()
-                + ' '.join(filter(None, car.xpath(
-                    './/div[@class="cldf-summary-seller-contact-second-line"]//text()').extract_first())).strip('\n').split(),
+                # lambda item: len(item) > 0  ... filter(None,
+                'seller':            ' '.join(car.xpath('.//div[@class="cldf-summary-seller-company-first-line"]//text()').extract_first()).strip('\n').strip()
+                + ' '.join(car.xpath('.//div[@class="cldf-summary-seller-contact-second-line"]//text()').extract_first()).strip('\n').strip(),
             }
 
         next_page_url = response.xpath(
