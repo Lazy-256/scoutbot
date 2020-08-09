@@ -29,13 +29,13 @@ class ToScrapeSpiderXPath(scrapy.Spider):
                 'data-place-holder':      car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-vehicle-data"]/ul[1]/li[@data-placeholder=""]/text()').extract_first(),
                 'transmission-type': car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-full-item-main"]/div[@class="cldt-summary"]/div[@class="cldt-summary-vehicle-data"]/ul[1]/li[@data-type="transmission-type"]/text()').extract_first(),
                 # 'seller':            car.xpath('./div[@class="cldt-summary-full-item"]/div[@class="cldt-summary-seller"]/div[@class="cldt-summary-seller-data"]/div[@class="cldt-summary-seller-company"]//div/text()').extract(),
-                'seller':            ' '.join(filter(lambda item: len(item) > 0, car.xpath('.//div[@class="cldf-summary-seller-company-first-line"]//text()').extract_first().strip()))
+                'seller':            ' '.join(filter(lambda item: len(item) > 0, car.xpath('.//div[@class="cldf-summary-seller-company-first-line"]//text()').extract_first())
                 + ' '.join(filter(lambda item: len(item) > 0, car.xpath(
-                    './/div[@class="cldf-summary-seller-contact-second-line"]//text()').extract_first().strip())),
+                    './/div[@class="cldf-summary-seller-contact-second-line"]//text()').extract_first()),
             }
 
-        next_page_url = response.xpath(
-            '//li[@class="next-page"]/a/@href').extract_first()
+        next_page_url=response.xpath(
+            '//ul[@class="sc-pagination"]//li[@class="next-page"]/a/@href').extract_first()
         logging.info(response.urljoin(next_page_url))
         if next_page_url is not None:
             yield scrapy.Request(response.urljoin(next_page_url))
