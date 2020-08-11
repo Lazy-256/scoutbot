@@ -16,6 +16,9 @@ class ToScrapeSpiderXPath(scrapy.Spider):
         super().__init__(*args, **kwargs)
 
     def parse(self, response):
+        next_page_url = response.xpath(
+            '//ul[@class="sc-pagination"]//li[@class="next-page"]/a/@href').extract_first()
+
         for car in response.xpath('//div[@class="cl-list-element cl-list-element-gap"]'):
             yield {
                 'title':             ' '.join(filter(None, car.xpath('.//h2[contains(@class ,"sc-ellipsis")]/text()').extract())),
@@ -32,8 +35,6 @@ class ToScrapeSpiderXPath(scrapy.Spider):
                 # + ' '.join(car.xpath('.//div[@class="cldf-summary-seller-contact-second-line"]//text()').extract_first()).strip('\n').strip(),
             }
 
-        next_page_url = response.xpath(
-            '//ul[@class="sc-pagination"]//li[@class="next-page"]/a/@href').extract_first()
         logging.info(response.urljoin(next_page_url))
         yield {'next_page_url':  next_page_url}
         if next_page_url is not None:
